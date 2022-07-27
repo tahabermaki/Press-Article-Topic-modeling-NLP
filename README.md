@@ -1,45 +1,48 @@
-# Topic-modeling-d'article-de-presse
-La modélisation thématique est une méthode de classification non supervisée de tels documents, similaire au regroupement sur des données numériques, qui trouve des groupes naturels d'éléments même lorsque nous ne sommes pas sûrs de ce que nous recherchons. Dans ce projet, nous allons extraire le pourcentage de thèmes dans chaque article que nous avons dans l'ensemble de données.
+The focus lies on (topic-specific) collection building, a field that is becoming increasingly interesting with better article separation. Very specific research problems are addressed, such as building up collections with ambiguous keywords or working with certain genres. In order to best meet the needs of digital humanities scholars, NLP methods are adapted in new ways, the output is human-readable and the processed newspaper articles can be exported in the form of the original file. In addition, the notebooks allow the users to control the single steps and to choose what is best for their collection. While the NewsEye demonstrator offers the possibility to create datasets quickly and effectively, these notebooks offer possibilities to work on these collections according to specific questions.
 
-Etapes de préparation des données :
-1.	Tokenisation : transformer un texte en une série de Tokens individuels
-2.	Supprimer les Stopwords : Création d’une liste de stopwords personnalisée compatible avec nos données qui peut être encore amélioré en ajoutant des mots qui ne nous intéressent pas.
-3.	Lemmatization : donner aux mots la forme neutre canonique qu'ils ont.
-4.	Création de Bigram and Trigram Models : à partir de notre liste de tokens nettoyés, créer des bigrammes et trigrammes (paires de mots, qui peuvent être porteurs de sens et qui sont donc utile pour le topic extraction).
-5.	Supprimer les articles trop courts (Pas important) : Pour optimiser les résultats du modèle, nous pouvons éviter d'avoir des articles avec moins de 30 tokens après le nettoyage.
+# Topic-modeling-of-press-article
+Topic modeling is a method of unsupervised classification of such documents, similar to clustering on numerical data, which finds natural groups of items even when we are not sure what we are looking for. In this project, we are going to extract the percentage of themes in each article that we have in the dataset.
 
-Topic Modeling
-Modèle LDA: 
-LDA prend en compte un corpus de documents, un certain nombre de k sujets et produit des distributions de probabilité de topic (sujets) pour chaque document.
-Il est important de noter qu'en mentionnant "topic 0" ou "topic 1", ces sujets consistent généralement en des distributions de probabilités sur plusieurs mots qui composent le sujet.
-Par exemple:
-Le topic 14 pourrait consister en 40 % de « Classe », 30 % de « enfant » et 20 % de « scolaire » …
-L’Output du modèle serait:
-•	La répartition des mots par sujet.
-•	Répartition des sujets par document.
-*Plus d’informations sur le notebook*
-Métrique d’évaluation : 
-On utilise le score de cohérence dans le topic modeling pour mesurer à quel point les sujets sont interprétables pour les humains. Dans ce cas, les sujets sont représentés par les N premiers mots ayant la probabilité la plus élevée d'appartenir à ce sujet particulier. En bref, le score de cohérence mesure à quel point ces mots sont similaires les uns aux autres.
+Data preparation steps:
+1. Tokenization: transforming a text into a series of individual tokens
+2. Delete Stopwords: Creation of a personalized list of stopwords compatible with our data which can be further improved by adding words that do not interest us.
+3. Lemmatization: giving words the canonical neutral form they have.
+4. Creation of Bigram and Trigram Models: from our list of cleaned tokens, create bigrams and trigrams (pairs of words, which can carry meaning and which are therefore useful for the extraction topic).
+5. Remove articles that are too short (Not important): To optimize the results of the model, we can avoid having articles with less than 30 tokens after cleaning.
 
-Nombre de topic :
-Nous initialisons notre modèle LDA à l'aide de Gensim et spécifions les Topic souhaités comme 15.
-Cette valeur peut être améliorer grâce à la valeur de la cohérence. 
-Il n'y a pas de façon unique de déterminer si le score de cohérence est bon ou mauvais. Le score et sa valeur dépendent des données à partir desquelles il est calculé. Par exemple, dans un cas, le score de 0,5 peut être suffisant mais pas acceptable dans un autre cas. La seule règle est que nous voulons maximiser ce score.
 
-Habituellement, le score de cohérence augmentera avec l'augmentation du nombre de sujets. Cette augmentation diminuera à mesure que le nombre de sujets augmentera. Le compromis entre le nombre de sujets et le score de cohérence peut être réalisé en utilisant la technique dite du coude. La méthode consiste à tracer le score de cohérence en fonction du nombre de sujets. Nous utilisons le coude de la courbe pour sélectionner le nombre de sujets.
+# LDA Model:
+LDA takes into account a corpus of documents, a number of k topics and produces topic probability distributions for each document.
+It is important to note that when mentioning "topic 0" or "topic 1", these topics generally consist of probability distributions over several words that make up the topic.
+For instance:
+Topic 14 could consist of 40% "Class", 30% "child" and 20% "school"...
+The Model Output would be:
+• The distribution of words by subject.
+• Breakdown of subjects by document.
+*More information on the notebook*
+Evaluation metric:
+We use the consistency score in topic modeling to measure how interpretable topics are to humans. In this case, topics are represented by the first N words with the highest probability of belonging to that particular topic. In short, the consistency score measures how similar these words are to each other.
+
+
+Number of topics:
+We initialize our LDA model using Gensim and specify the desired Topics as 15.
+This value can be improved thanks to the consistency value.
+There is no single way to determine if the consistency score is good or bad. The score and its value depend on the data from which it is calculated. For example, in one case, the score of 0.5 may be sufficient but not acceptable in another case. The only rule is that we want to maximize this score.
+
+Usually, the consistency score will increase with increasing number of subjects. This increase will decrease as the number of subjects increases. The compromise between the number of subjects and the consistency score can be achieved using the so-called elbow technique. The method consists of plotting the consistency score as a function of the number of subjects. We use the elbow of the curve to select the number of subjects.
 
 Résultats : 
 ![image](https://user-images.githubusercontent.com/45733593/176407200-a144bdd4-9350-4f6c-b835-85380416860f.png)
 
-  
-Le score de cohérence que nous avons obtenu pour ce modèle était :
+ The consistency score we obtained for this model was:
  ![image](https://user-images.githubusercontent.com/45733593/176407245-2b6a88ed-d66e-45f0-bd9a-e364b00503f0.png)
+As the figure indicates, we have succeeded in identifying Topics with an acceptable distance, i.e. there is no overlap between the topics.
+(See notebook for interactive visualization)
+For example Topic 9 represented by words like: city, town hall, work, municipality, municipal, union, public, land… can refer to the subject of the CITY.
+Topic 5 and Topic 2 (the most interesting for the study) represented by words like: Price, customer, consumption, company, order, factory… refer to the subject of the COMPANY (ENTREPRISE in French)
 
-Comme la figure l’indique nous avons réussi à dégager des Topics avec une distance acceptable c’est-à-dire qu’il n’y a pas de chevauchement entre les sujets.
-(Voir le notebook pour une visualisation interactive)
-Par exemple le Topic 9 représenté par des mots comme : ville, mairie, travail, commune, municipal, syndicat, public, terrain… peut référer au sujet de la VILLE.
-Le Topic 5 et le Topic 2 (les plus intéressants pour l’étude) représentés par des mots comme : Prix, client, consommation, entreprise, commande, usine … renvoie au sujet de l’ENTREPRISE. 
+The model returns a list of probability of belonging to a topic as follows:
 
-Le modèle renvoie une liste de probabilité d’appartenance à un topic comme suit : 
+
 ![image](https://user-images.githubusercontent.com/45733593/176407147-b8625894-64d0-4eb1-a9e0-a4e3786bcc7b.png)
 
